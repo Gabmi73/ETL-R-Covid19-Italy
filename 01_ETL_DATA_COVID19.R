@@ -104,7 +104,7 @@ colors_sum <- dpcReg %>%
 
 
 # RT FUNCTION
-# R Epiestim function available at
+# Function based on R Epiestim script available at
 # "https://www.epicentro.iss.it/coronavirus/open-data/calcolo_rt_italia.zip"
 
 F_RT <- function(x) {
@@ -130,21 +130,21 @@ F_RT <- function(x) {
   return(RT_table)
 }
 
-# 1) RT SYMPTOMATIC
+# 1) RT SYMPTOMATIC (from ISS database)
 RT_sym <- iss_sym %>% 
-  select(dates = DATA_INIZIO_SINTOMI, I = CASI_SINT) %>% 
+  select(dates = DATA_INIZIO_SINTOMI, I = CASI_SINT) %>% # Epiestim requires only two columns named exactly dates and I, i.e. nr of cases/ positives)
   mutate(dates = as.Date(dates, format = "%d/%m/%Y"),
          I = as.numeric(I)) %>% 
-  slice(-793) %>% 
+  slice(1:(n()-1)) %>% #get rid of last row that is the sum of column
   F_RT() %>% 
   rename(data = dates, RT_sym = RT, CI_low_sym = CI_low,
          CI_up_sym = CI_up)
 
 
-# 2) RT HOSPITALIZED (based on nr of patients hospitalized)
+# 2) RT HOSPITALIZED (from DPC database)
 RT_hosp <- dpcNaz  %>%
   rename(I = "totale_ospedalizzati",
-         dates = data) %>%
+         dates = data) %>% # Epiestim requires only two columns named exactly dates and I, i.e. nr of cases/ positives)
   select(c(dates, I)) %>% 
   F_RT() %>% 
   rename(data = date, RT_hosp = RT, CI_low_hosp = CI_low,
@@ -199,9 +199,9 @@ nat_df <- dpcNaz %>%
   mutate(perc_pos = round(nuovi_positivi/ nuovi_tamponi*100, digits = 2)) %>%
   mutate(perc_pos = ifelse(perc_pos <0,
                            (perc_pos[42]+perc_pos[44])/2,
-                           perc_pos)) %>% # gestione strano outlier 
+                           perc_pos)) %>% # dealing with a strange outlier 
   mutate(col_day = ifelse(data >= "2020-03-09" & data <= "2020-05-04",
-                          84, col_day),
+                          84, col_day), # first global lockdown in Italy corresponding about at the red zone
          col_day = ifelse(data >= "2020-05-05" & data <= "2020-11-04",
                           21, col_day),
          col_day = ifelse(data <= "2020-03-08",
