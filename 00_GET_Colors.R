@@ -6,10 +6,7 @@ urls <- paste0("https://www.gazzettaufficiale.it/attiAssociati/",
                "?areaNode=17")
 
 get_ord <- function(urls) {
-  require(rvest)
-
   soup <- read_html(urls)
-
   data <- soup %>% 
     html_nodes(".riferimento") %>% 
     html_text(trim = T) %>% 
@@ -22,7 +19,6 @@ get_ord <- function(urls) {
   not_col <-"22A01119|22A01121|21A06279|21A04917|21A03740|
             |21A03618|21A03419|21A03151|20A06371|20A01272|
             |20A01273|20A01274|20A01275|20A01276|20A01277"
-  
   
   ordinanze <- soup %>% 
     html_nodes(".risultato a+ a") %>% 
@@ -50,6 +46,8 @@ get_ord <- function(urls) {
     filter(!str_detect(nr_ord, not_col)) 
 } 
 
+# first ordinances were published with a different structure, file "ordinances_integration.csv"
+# has been manually created to such integration
 integr <- read_csv("ordinances_integration.csv", 
                    col_types = cols(data = col_date(format = "%Y-%m-%d")))
 
@@ -58,5 +56,5 @@ ord <- map_df(urls, get_ord) %>%
   mutate(col = 0) %>% # adding columns for colors
   select(-text) 
 
-write.csv(ord, "ordinances.csv", row.names = F, quote = F)
+# write.csv(ord, "ordinances.csv", row.names = F, quote = F)
 
