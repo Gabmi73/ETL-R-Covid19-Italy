@@ -17,7 +17,7 @@ dpcReg <- read.csv(
   header = TRUE, encoding = "UTF-8") %>% 
   mutate(data = as.Date(data))
 
-# VACCINATIONS DATA
+# VACCINATION DATA
 openVax <- read.csv(
   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/somministrazioni-vaccini-summary-latest.csv",
   header = TRUE, encoding = "UTF-8") %>% 
@@ -152,6 +152,8 @@ RT_hosp <- dpcNaz  %>%
 
 
 # WEEKLY INCIDENCE OVER 100.000
+# NOTE: NOT STANDARDIZED, based only on pure population nr,
+# without sex, age and vaccination risk standardization
 incid100k7 <- dpcNaz  %>%
   left_join(sup_pop) %>%
   fill(N, .direction="up") %>% 
@@ -159,7 +161,7 @@ incid100k7 <- dpcNaz  %>%
   fill(N) %>%
   group_by(week = cut(data, "week", start.on.monday = TRUE)) %>% 
   summarise(data = data,
-            incid_100k_1week = round(sum(nuovi_positivi)/N*100000)) %>% 
+            incid_100k_7ns = round(sum(nuovi_positivi)/N*100000)) %>% 
   mutate(week = lubridate::isoweek(week),
          year = lubridate::isoyear(data)) %>%
   unite("week_nr", c("week", "year"), sep = "_") %>% 
@@ -207,16 +209,21 @@ nat_df <- dpcNaz %>%
          col_day = ifelse(data <= "2020-03-08",
                           0, col_day)) %>% # fill con primo lock (21 reg x4 red)
   left_join(incid100k7) %>% 
-  select(data, week_nr, col_day, nuovi_positivi, perc_pos, RT_sym,
-         RT_hosp, incid_100k_1week, nuovi_ricoveri, nuovi_deceduti, nuovi_tamponi, 
-         vaccini, tamponi, totale_casi, CI_low_sym, CI_up_sym,
-         CI_low_hosp, CI_up_hosp)
-  
+  select(date = data, week = week_nr, colors = col_day, new_pos = nuovi_positivi,
+         perc_pos, RT_sym, RT_hosp,  new_hosp = nuovi_ricoveri,
+         new_die = nuovi_deceduti, new_buff = nuovi_tamponi, vax = vaccini,
+         tot_buff = tamponi, tot_case = totale_casi, CI_low_sym, CI_up_sym,
+         CI_low_hosp, CI_up_hosp, incid_100k_7ns,)
+
+remove("col_ord", "colors_sum", "dataUrl", "dpcNaz", "dpcReg",
+       "F_RT", "incid100k7", "iss_sym", "openVax", "RT_hosp",
+       "RT_sym", "temp", "vax")
+
 # ============= SAVE FOR FUTURE LOADING ========================
 
 # select two years
 nat_df2 <- nat_df %>% 
-  filter(data >= "2020-03-09" & data <= "2022-03-20")
+  filter(date >= "2020-03-09" & date <= "2022-03-20")
 
 write.csv(nat_df2, "Covid_Italy_df.csv", row.names = FALSE,
           quote = FALSE)
