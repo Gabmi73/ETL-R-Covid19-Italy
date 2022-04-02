@@ -215,7 +215,7 @@ nat_df <- dpcNaz %>%
          tot_buff = tamponi, tot_case = totale_casi, CI_low_sym, CI_up_sym,
          CI_low_hosp, CI_up_hosp, incid_100k_7ns,)
 
-remove("col_ord", "colors_sum", "dataUrl", "dpcNaz", "dpcReg",
+remove("col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",
        "F_RT", "incid100k7", "iss_sym", "openVax", "RT_hosp",
        "RT_sym", "temp", "vax")
 
@@ -223,7 +223,7 @@ remove("col_ord", "colors_sum", "dataUrl", "dpcNaz", "dpcReg",
 
 # select two years
 nat_df2 <- nat_df %>% 
-  filter(date >= "2020-03-09" & date <= "2022-03-20")
+  filter(date >= "2020-03-09" & date <= "2022-03-31")
 
 write.csv(nat_df2, "Covid_Italy_df.csv", row.names = FALSE,
           quote = FALSE)
