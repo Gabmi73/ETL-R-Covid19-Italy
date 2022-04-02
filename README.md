@@ -11,7 +11,7 @@ These variables serve, in the intentions - but absolutely not exhaustives, to ge
 
 #### **METHODOLOGICAL NOTES**
 
-- Unfortunately not all data have been publicly provided, important elements such as age ranges, sex both on covid trend and vaccine somministration are not available. Therefore I have calculated the Incidence on 100k only on pure numbers of total population. It is basicly less precise and it looses al lot of information, but can almost get an overall view of the incidence.
+- Unfortunately not all data have been publicly provided, important elements such as age ranges, sex both on covid trend and vaccine somministration are not available. Therefore, e.g., I have calculated the Incidence on 100k only on pure numbers of total population. It is basicly less precise and it looses al lot of information, but can almost give an overall view of the incidence.
 
 - The result dataframe is aggregated on national data, not by each region. However, the scripts contain also regional extractions and transformations can be easily made.
 
