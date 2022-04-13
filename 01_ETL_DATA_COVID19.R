@@ -211,8 +211,8 @@ nat_df <- dpcNaz %>%
   left_join(incid100k7) %>% 
   select(date = data, week = week_nr, colors = col_day, new_pos = nuovi_positivi,
          perc_pos, RT_sym, RT_hosp,  new_hosp = nuovi_ricoveri,
-         new_die = nuovi_deceduti, new_buff = nuovi_tamponi, vax = vaccini,
-         tot_buff = tamponi, tot_case = totale_casi, CI_low_sym, CI_up_sym,
+         new_die = nuovi_deceduti, new_tests = nuovi_tamponi, vax = vaccini,
+         tot_tests = tamponi, tot_case = totale_casi, CI_low_sym, CI_up_sym,
          CI_low_hosp, CI_up_hosp, incid_100k_7ns,)
 
 remove("col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",

@@ -54,9 +54,9 @@ These variables serve, in the intentions - but absolutely not exhaustives, to ge
 | == | RT_hosp | T | RT based on hospitaized | DPC |
 | == | new_hosp | T | New hospitalized | DPC |
 | == | new_die | T | New dies | DPC |
-| == | new_buff | T | New buffers | DPC |
+| == | new_tests | T | New covid tests | DPC |
 | totale | vax | T | Total number of administred dose of vaccines (sum of all regional data)  | DPC-V |
-| tamponi | tot_buff | O | All tests performed | DPC |
+| tamponi | tot_tests | O | All tests performed | DPC |
 | totale_casi | tot_case | O | Total amount of positive cases | DPC |
 | == | CI_low_sym | T | Confidence Interval Low Bound symptomatic | ISS |
 | == | CI_up_sym | T | Confidence Interval High Bound symptomatic | ISS |
