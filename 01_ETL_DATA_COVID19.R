@@ -1,7 +1,7 @@
 library(tidyverse) 
 library(rsdmx)
 
-# ========= ETL DATA COVID-19 ITALY
+# ========= ETL DATA COVID-19 ITALY  
 
 # ====================== EXTRACTIONS ========================
 
@@ -215,10 +215,10 @@ nat_df <- dpcNaz %>%
          col_day = as.integer(col_day)) %>% 
   left_join(incid100k7) %>% 
   select(date = data, week = week_nr, colors = col_day, new_pos = nuovi_positivi,
-         tot_hosp = totale_ospedalizzati, perc_pos, RT_sym, RT_hosp,
-         var_hosp = var_ospedalizzati, new_die = nuovi_deceduti, new_tests = nuovi_tamponi, vax = vaccini,
-         tot_tests = tamponi, tot_case = totale_casi, CI_low_sym, CI_up_sym,
-         CI_low_hosp, CI_up_hosp, incid_100k_7ns)
+         tot_case = totale_casi, tot_hosp = totale_ospedalizzati, perc_pos,
+         RT_sym, RT_hosp, var_hosp = var_ospedalizzati, new_die = nuovi_deceduti,
+         tot_dies =deceduti, new_tests = nuovi_tamponi, tot_tests = tamponi,
+         vax = vaccini, CI_low_sym, CI_up_sym, CI_low_hosp, CI_up_hosp, incid_100k_7ns)
 
 remove("col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",
        "F_RT", "incid100k7", "iss_sym", "openVax", "RT_hosp",
