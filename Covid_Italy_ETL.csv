@@ -1,4 +1,4 @@
-date,week,colors,new_pos,tot_case,tot_hosp,perc_pos,RT_sym,RT_hosp,var_hosp,new_die,tot_dies,new_tests,tot_tests,vax,CI_low_sym,CI_up_sym,CI_low_hosp,CI_up_hosp,incid_100k_7ns
+date,week,colors,new_pos,tot_case,tot_hosp,perc_pos,RT_sym,RT_hosp,var_hosp,new_dies,tot_dies,new_tests,tot_tests,vax,CI_low_sym,CI_up_sym,CI_low_hosp,CI_up_hosp,incid_100k_7ns
 2020-02-24,9_2020,0,221,229,127,5.11,2.91,NA,127,7,7,4324,4324,NA,2.8,3.03,NA,NA,3
 2020-02-25,9_2020,0,93,322,150,2.16,2.97,NA,23,3,10,4299,8623,NA,2.86,3.07,NA,NA,3
 2020-02-26,9_2020,0,78,400,164,8.09,2.83,NA,14,2,12,964,9587,NA,2.74,2.92,NA,NA,3

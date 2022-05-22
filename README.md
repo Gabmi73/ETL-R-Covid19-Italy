@@ -49,16 +49,17 @@ These variables serve, in the intentions - but absolutely not exhaustives, to ge
 | == | week | T | week_number_yyyy | == | chr |
 | == | colors | N | for each day, sum of color number (see methodological notes) | GU | int |
 | nuovi_positivi | new_pos | O | Total amount of current positive cases (Hospitalised patients + Home confinement) | DPC | int |
+| totale_casi | tot_case | O | Total amount of positive cases | DPC | int |
 | == | tot_hosp | O | Total of hospitalized (recovered + intensive) | DPC | int |
 | == | perc_pos | T | Percentage of new positives (new_pos/new_buffers*100) | DPC | dbl |
 | == | RT_sym | T | RT based on symptomatics | ISS | dbl |
 | == | RT_hosp | T | RT based on hospitaized | DPC | dbl |
 | == | var_hosp | T | Variation of hospitalized | DPC | int |
-| == | new_die | T | New dies | DPC | int |
+| == | new_dies | T | New dies | DPC | int |
+| == | tot_dies | T | Total nr of dies cumulative | DPC | int |
 | == | new_tests | T | New covid tests | DPC | int |
-| totale | vax | T | Total number of administred dose of vaccines (sum of all regional data)  | DPC-V | int |
 | tamponi | tot_tests | O | All tests performed | DPC | int |
-| totale_casi | tot_case | O | Total amount of positive cases | DPC | int |
+| totale | vax | T | Total number of administred dose of vaccines (sum of all regional data)  | DPC-V | int |
 | == | CI_low_sym | T | Confidence Interval Low Bound symptomatic | ISS | dbl |
 | == | CI_up_sym | T | Confidence Interval High Bound symptomatic | ISS | dbl |
 | == | CI_low_hosp | T | Confidence Interval Low Bound hospitalized | DPC | dbl |
