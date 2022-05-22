@@ -21,7 +21,7 @@ dpcReg <- read.csv(
 openVax <- read.csv(
   "https://raw.githubusercontent.com/italia/covid19-opendata-vaccini/master/dati/somministrazioni-vaccini-summary-latest.csv",
   header = TRUE, encoding = "UTF-8") %>% 
-  mutate(data_somministrazione = as.Date(data_somministrazione))
+  mutate(data = as.Date(data))
 
 
 # ISTAT ITALIAN NATIONAL STATISTICS
@@ -87,7 +87,7 @@ download.file(dataURL, destfile = temp, mode="wb")
 
 iss_sym <- read_excel(temp, sheet = "casi_inizio_sintomi_sint")
 
-# ====================== FEATURE TRANSFORMATION AND ENGENEERING =========
+# ====================== FEATURE ENGENEERING =========
 
 # CALCULATING NATIONAL COLORS SCORE BY SUM OF COLORS FOR EACH REGION
 # AND THEN SUM OF COL REGIONS FOR EACH DAY
@@ -100,7 +100,10 @@ colors_sum <- dpcReg %>%
   select(data, Territorio, color) %>% 
   ungroup() %>% 
   group_by(data) %>% 
-  summarise(col_day = sum(color))
+  summarise(col_day = sum(color)) %>% 
+  mutate(col_day = ifelse(data < "2020-11-06", 0, col_day)) %>% # no color days
+  mutate(col_day = ifelse(data > "2022-03-31", 0, col_day)) %>% 
+  mutate(col_day = as.integer(col_day))
 
 
 # RT FUNCTION
@@ -168,9 +171,8 @@ incid100k7 <- dpcNaz  %>%
   ungroup()
 
 vax <- openVax  %>% 
-  select(c(data = data_somministrazione, Territorio = nome_area,
-           totale_vaccinati = totale, prima_dose, seconda_dose,
-           pregressa_infezione, dose_addizionale_booster)) %>% 
+  select(c(data, Territorio = reg, tot_vacc = totale,
+           d1, d2, dpi, dbi, db2)) %>% 
   mutate(Territorio = ifelse(Territorio == "Friuli-Venezia Giulia" ,
                              "Friuli Venezia Giulia", Territorio),
          Territorio = ifelse(Territorio == "Provincia Autonoma Bolzano / Bozen" ,
@@ -180,9 +182,9 @@ vax <- openVax  %>%
          Territorio = ifelse(Territorio == "Valle d'Aosta / Vallée d'Aoste" ,
                              "Valle d'Aosta", Territorio)) %>% 
   filter(Territorio %in% unique(dpcReg$denominazione_regione)) %>% 
-  select(data, totale_vaccinati) %>% 
+  select(data, tot_vacc) %>% 
   group_by(data) %>% 
-  summarise(vaccini = sum(totale_vaccinati))
+  summarise(vaccini = sum(tot_vacc))
 
 
 # COMBINING ALL IN THE FINAL DATAFRAME AND ESTRACTING OTHER NEW FEATURES
@@ -207,7 +209,8 @@ nat_df <- dpcNaz %>%
          col_day = ifelse(data >= "2020-05-05" & data <= "2020-11-04",
                           21, col_day),
          col_day = ifelse(data <= "2020-03-08",
-                          0, col_day)) %>% # fill con primo lock (21 reg x4 red)
+                          0, col_day), 
+         col_day = as.integer(col_day)) %>% 
   left_join(incid100k7) %>% 
   select(date = data, week = week_nr, colors = col_day, new_pos = nuovi_positivi,
          perc_pos, RT_sym, RT_hosp,  new_hosp = nuovi_ricoveri,
@@ -219,11 +222,11 @@ remove("col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",
        "F_RT", "incid100k7", "iss_sym", "openVax", "RT_hosp",
        "RT_sym", "temp", "vax")
 
-# ============= SAVE FOR FUTURE LOADING ========================
+# ============= SAVE  ========================
 
-# select two years
-nat_df2 <- nat_df %>% 
-  filter(date >= "2020-03-09" & date <= "2022-03-31")
+# # select only period within colors 
+# nat_df2 <- nat_df %>% 
+#   filter(date >= "2020-11-05" & date <= "2022-03-31")
 
-write.csv(nat_df2, "Covid_Italy_df.csv", row.names = FALSE,
+write.csv(nat_df, "Covid_Italy_ETL.csv", row.names = FALSE,
           quote = FALSE)
