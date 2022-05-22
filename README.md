@@ -49,10 +49,11 @@ These variables serve, in the intentions - but absolutely not exhaustives, to ge
 | == | week | T | week_number_yyyy | == | chr |
 | == | colors | N | for each day, sum of color number (see methodological notes) | GU | int |
 | nuovi_positivi | new_pos | O | Total amount of current positive cases (Hospitalised patients + Home confinement) | DPC | int |
+| == | tot_hosp | O | Total of hospitalized (recovered + intensive) | DPC | int |
 | == | perc_pos | T | Percentage of new positives (new_pos/new_buffers*100) | DPC | dbl |
 | == | RT_sym | T | RT based on symptomatics | ISS | dbl |
 | == | RT_hosp | T | RT based on hospitaized | DPC | dbl |
-| == | new_hosp | T | New hospitalized | DPC | int |
+| == | var_hosp | T | Variation of hospitalized | DPC | int |
 | == | new_die | T | New dies | DPC | int |
 | == | new_tests | T | New covid tests | DPC | int |
 | totale | vax | T | Total number of administred dose of vaccines (sum of all regional data)  | DPC-V | int |

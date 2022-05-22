@@ -1,7 +1,7 @@
 library(tidyverse) 
 library(rsdmx)
 
-# ======== ETL DATA COVID-19 ITALY
+# ========= ETL DATA COVID-19 ITALY
 
 # ====================== EXTRACTIONS ========================
 
@@ -191,32 +191,34 @@ vax <- openVax  %>%
 nat_df <- dpcNaz %>%
   left_join(vax) %>% 
   left_join(sup_pop) %>% 
-  fill(N, .direction="up") %>%
+  fill(N, .direction="up") %>% 
   left_join(colors_sum) %>%
   left_join(RT_hosp) %>%
   left_join(RT_sym) %>% 
-  fill(N, col_day) %>% 
-  arrange(data) %>% 
-  mutate(nuovi_tamponi = tamponi - lag(tamponi),
-         nuovi_deceduti = deceduti - lag(deceduti),
-         nuovi_ricoveri = totale_ospedalizzati - lag(totale_ospedalizzati)) %>%
-  mutate(perc_pos = round(nuovi_positivi/ nuovi_tamponi*100, digits = 2)) %>%
-  mutate(perc_pos = ifelse(perc_pos <0,
+  fill(N, .direction="down") %>% 
+  arrange(data) %>%
+  mutate(nuovi_deceduti = deceduti - lag(deceduti, default = 0),
+         nuovi_tamponi = tamponi - lag(tamponi, default = 0),
+         var_ospedalizzati = totale_ospedalizzati - lag(totale_ospedalizzati,
+                                                        default =0),
+         var_ospedalizzat = as.integer(var_ospedalizzati)) %>% 
+  mutate(perc_pos = round(nuovi_positivi/ nuovi_tamponi*100, digits = 2),
+         perc_pos = ifelse(perc_pos <0,
                            (perc_pos[42]+perc_pos[44])/2,
-                           perc_pos)) %>% # dealing with a strange outlier 
+                           perc_pos)) %>% # adjustment of a strange outlore
   mutate(col_day = ifelse(data >= "2020-03-09" & data <= "2020-05-04",
                           84, col_day), # first global lockdown in Italy corresponding about at the red zone
          col_day = ifelse(data >= "2020-05-05" & data <= "2020-11-04",
                           21, col_day),
          col_day = ifelse(data <= "2020-03-08",
-                          0, col_day), 
+                          0, col_day),
          col_day = as.integer(col_day)) %>% 
   left_join(incid100k7) %>% 
   select(date = data, week = week_nr, colors = col_day, new_pos = nuovi_positivi,
-         perc_pos, RT_sym, RT_hosp,  new_hosp = nuovi_ricoveri,
-         new_die = nuovi_deceduti, new_tests = nuovi_tamponi, vax = vaccini,
+         tot_hosp = totale_ospedalizzati, perc_pos, RT_sym, RT_hosp,
+         var_hosp = var_ospedalizzati, new_die = nuovi_deceduti, new_tests = nuovi_tamponi, vax = vaccini,
          tot_tests = tamponi, tot_case = totale_casi, CI_low_sym, CI_up_sym,
-         CI_low_hosp, CI_up_hosp, incid_100k_7ns,)
+         CI_low_hosp, CI_up_hosp, incid_100k_7ns)
 
 remove("col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",
        "F_RT", "incid100k7", "iss_sym", "openVax", "RT_hosp",
