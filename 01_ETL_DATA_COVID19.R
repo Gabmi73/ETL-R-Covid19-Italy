@@ -1,5 +1,6 @@
 library(tidyverse) 
 library(rsdmx) 
+library(readxl)
 
 # ========= ETL DATA COVID-19 ITALY  
 
@@ -220,7 +221,8 @@ nat_df <- dpcNaz %>%
          tot_dies =deceduti, new_tests = nuovi_tamponi, tot_tests = tamponi,
          vax = vaccini, CI_low_sym, CI_up_sym, CI_low_hosp, CI_up_hosp, incid_100k_7ns)
 
-remove("col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",
+remove("ITTER107", "pop_mese", "sup_pop", "superfici",
+       "col_ord", "colors_sum", "dataURL", "dpcNaz", "dpcReg",
        "F_RT", "incid100k7", "iss_sym", "openVax", "RT_hosp",
        "RT_sym", "temp", "vax")
 
