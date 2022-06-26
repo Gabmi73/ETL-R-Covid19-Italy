@@ -5,7 +5,7 @@ The aim of this project is twice:
 
 1. to provide a dataset with the colors of all the days, for each Italian region, due to the Italian Government "zoning by four colors according to the C19 parameters severity indices" by decree of the DPCM dtd 06/nov/2020 and subsequent ordinances. The period starts form 06/Nov/2020 until 31/Mar/2022. The colors, increasing from the lowest to the highest impact, are: 1) white, 2) yellow, 3) orange, 4) red.
 
-2. to provide an ETL pipline and one simple and short dataset derived from the Italian Covid19 opendata and other sources. It gathers some of the important features, either new, such as the colors I have created, or transformed, starting from 09/Mar/2020 to 31/Mar/22.
+2. to provide an ETL pipline and one simple and short dataset derived from the Italian Covid19 opendata and other sources. It collects some of most important features, either new, such as the colors I have created, or transformed-
 These variables serve, in the intentions - but absolutely not exhaustives, to get a semi-ready-to-use csv file for all kind of analysis, as Times Series, Statistics, Machine Learing, Deep Learning tecniques.
 
 
